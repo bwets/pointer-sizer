@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationIcon>cursor-256.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,7 +14,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="cursor-256.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <EmbeddedResource Include="cursor-256.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
 
 </Project>

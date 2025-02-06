@@ -1,13 +1,17 @@
+using System.Diagnostics;
 using System.Reflection;
+using System.Runtime.InteropServices;
 
 namespace PointerSizer;
 
 internal static class Program
 {
     private static NotifyIcon? _icon;
-    private static int _addKey;
-    private static int _subKey;
+    private static int _addKey1;
+    private static int _subKey1;
     private static int _resetKey;
+    private static int _addKey2;
+    private static int _subKey2;
 
     [STAThread]
     static void Main()
@@ -15,8 +19,10 @@ internal static class Program
         ApplicationConfiguration.Initialize();
         var context = new ApplicationContext();
 
-        _addKey = HotKeyManager.RegisterHotKey(Keys.Add, KeyModifiers.Windows | KeyModifiers.Shift);
-        _subKey = HotKeyManager.RegisterHotKey(Keys.Subtract, KeyModifiers.Windows | KeyModifiers.Shift);
+        _addKey1 = HotKeyManager.RegisterHotKey(Keys.Add, KeyModifiers.Windows | KeyModifiers.Shift);
+        _addKey2 = HotKeyManager.RegisterHotKey(Keys.I, KeyModifiers.Windows | KeyModifiers.Shift);
+        _subKey1 = HotKeyManager.RegisterHotKey(Keys.Subtract, KeyModifiers.Windows | KeyModifiers.Shift);
+        _subKey2 = HotKeyManager.RegisterHotKey(Keys.D, KeyModifiers.Windows | KeyModifiers.Shift);
         _resetKey = HotKeyManager.RegisterHotKey(Keys.Multiply, KeyModifiers.Windows | KeyModifiers.Shift);
 
         HotKeyManager.HotKeyPressed += HotKeyManager_HotKeyPressed;
@@ -30,12 +36,14 @@ internal static class Program
         {
             context.ExitThread();
         });
-
+        
         Application.Run(context);
         AppDomain.CurrentDomain.ProcessExit += CurrentDomain_ProcessExit;
         Release();
     }
 
+    
+   
     private static void Release()
     {
         if (_icon == null) return;
@@ -44,8 +52,10 @@ internal static class Program
         _icon = null;
         try
         {
-            HotKeyManager.UnregisterHotKey(_addKey);
-            HotKeyManager.UnregisterHotKey(_subKey);
+            HotKeyManager.UnregisterHotKey(_addKey1);
+            HotKeyManager.UnregisterHotKey(_subKey1);
+            HotKeyManager.UnregisterHotKey(_addKey2);
+            HotKeyManager.UnregisterHotKey(_subKey2);
             HotKeyManager.UnregisterHotKey(_resetKey);
 
         }
@@ -64,9 +74,11 @@ internal static class Program
         switch (e.Key)
         {
             case Keys.Add:
+            case Keys.I:
                 Pointer.Increase();
                 break;
             case Keys.Subtract:
+            case Keys.D:
                 Pointer.Decrease();
                 break;
             case Keys.Multiply:
@@ -74,4 +86,7 @@ internal static class Program
                 break;
         }
     }
+
+ 
+ 
 }
